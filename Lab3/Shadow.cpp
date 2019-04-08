@@ -52,7 +52,7 @@ void initialise()
 //-------------------Floor Plane------------------------------------
 void floor()
 {
-	float floor_height = 0;
+	float floor_height = -0.1;
 
 	glColor3f(0, 0.5, 1.0);
 	glNormal3f(0, 1, 0);
@@ -78,7 +78,7 @@ void floor()
 	glEnd();
 
 	//Glass
-	glColor4f(1.0, 1.0, 1.0, 1.0);   //The fourth component is the transparency term
+	glColor4f(1.0, 1.0, 1.0, 0.3);   //The fourth component is the transparency term
 	glEnable(GL_TEXTURE_2D);
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -97,7 +97,10 @@ void floor()
 void display() 
 {
 	float light[] = {80, 80, 0, 1};
-
+	float shadowMat[16] = { 80, 0, 0, 0, 
+							-80, 0, -0, -1, 
+							0, 0, 80, 0, 
+							0, 0, 0, 80 };
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);	
 
 	glMatrixMode(GL_MODELVIEW);								
@@ -117,9 +120,32 @@ void display()
 	glPopMatrix();
 
 // Draw the shadow and the reflected teapots here...
+	glDisable(GL_LIGHTING);
+	glPushMatrix();
+	  glMultMatrixf(shadowMat);
+	  glTranslatef(0, 3, 0);
+	  glRotatef(angle, 1, 0, 0);
+	  glRotatef(angle * 2, 0, 1, 0);
+	  glColor4f(0.2, 0.2, 0.2, 1.0);
+	  glutSolidTeapot(1);
+	glPopMatrix();
 
+	light[1] = -light[1];
+	glLightfv(GL_LIGHT0, GL_POSITION, light); //new position
+	glEnable(GL_LIGHTING);
+	glColor3f(1, 0, 1);
+	glPushMatrix();
+	  glScalef(1, -1, 1);
+	  glTranslatef(0, 3, 0);
+	  glRotatef(angle, 1, 0, 0);
+	  glRotatef(angle * 2, 0, 1, 0);
+	  glColor3f(1, 0, 1);
+	  glutSolidTeapot(1);
+	glPopMatrix();
 
-
+	//change light position back;
+	light[1] = -light[1];
+	glLightfv(GL_LIGHT0, GL_POSITION, light);
 
 
 //  Draw floor
