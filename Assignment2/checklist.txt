@@ -1,0 +1,11 @@
+Basic Marks (9 marks)
+- A Light source ✓
+- Shadows ✓
+- A Sphere with Reflections ✓
+- A cuboid of sorts
+- A Planar surface with a pattern or texture ✓
+
+Extension (7 marks)
+- Anti-aliasing (1-2 Marks) ✓
+
+Current Total Marks: 10-11 / 16
